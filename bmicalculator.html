@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.result {
+    margin-top: 20px;
+}
+
+#bmi-result {
+    font-weight: bold;
+    color: #007bff;
+}
+
+</style>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>BMI Calculator</h1>
+        <div class="form-group">
+            <label for="weight">Weight:</label>
+            <select id="weight-unit" onchange="updateLabels()">
+                <option value="kg">kg</option>
+                <option value="lbs">lbs</option>
+            </select>
+            <input type="number" id="weight" placeholder="Enter weight">
+        </div>
+        <div class="form-group">
+            <label for="height">Height:</label>
+            <select id="height-unit" onchange="updateLabels()">
+                <option value="cm">cm</option>
+                <option value="inches">inches</option>
+            </select>
+            <input type="number" id="height" placeholder="Enter height">
+        </div>
+        <button onclick="calculateBMI()">Calculate BMI</button>
+        <div class="result">
+            <h2>Your BMI is: <span id="bmi-result">--</span></h2>
+        </div>
+    </div>
+    <script>function updateLabels() {
+        const weightUnit = document.getElementById('weight-unit').value;
+        const heightUnit = document.getElementById('height-unit').value;
+        const weightLabel = document.querySelector('label[for="weight"]');
+        const heightLabel = document.querySelector('label[for="height"]');
+        weightLabel.textContent = `Weight (${weightUnit}):`;
+        heightLabel.textContent = `Height (${heightUnit}):`;
+    }
+    function calculateBMI() {
+        const weight = parseFloat(document.getElementById('weight').value);
+        const height = parseFloat(document.getElementById('height').value);
+        const weightUnit = document.getElementById('weight-unit').value;
+        const heightUnit = document.getElementById('height-unit').value;
+        let weightInKg = weight;
+        let heightInMeters = height;
+        if (weightUnit === 'lbs') {
+            weightInKg = weight * 0.453;
+        }
+        if (heightUnit === 'cm') {
+            heightInMeters = height / 100;
+        } else if (heightUnit === 'inches') {
+            heightInMeters = height * 0.0254;
+        }
+        const bmi = weightInKg / (heightInMeters * heightInMeters);
+        if (!isNaN(bmi)) {
+            document.getElementById('bmi-result').textContent = bmi.toFixed(2);
+        } else {
+            document.getElementById('bmi-result').textContent = '--';
+        }
+    }
+    </script>
+</body>
+</html>
